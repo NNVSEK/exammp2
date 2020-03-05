@@ -50,28 +50,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 item.setCheckable(true);
 
-                switch (item.getItemId()) {
-                    default:
-                        cityFragment(3534);
-                        getSupportActionBar().setTitle("Montreal");
-                        break;
-                    case R.id.fifth:
-                        cityFragment(8775);
-                        getSupportActionBar().setTitle("Calgary");
-                        break;
-                    case R.id.third:
-                        cityFragment(4118);
-                        getSupportActionBar().setTitle("Toronto");
-                        break;
-                    case R.id.two:
-                        cityFragment(8676);
-                        getSupportActionBar().setTitle("Edmonton");
-                        break;
-                    case R.id.four:
-                        cityFragment(9807);
-                        getSupportActionBar().setTitle("Vancouver");
-                        break;
-                }
+
                 drawerLayout.closeDrawers();
                 return true;
             }

@@ -2,11 +2,9 @@ package com.example.exammp2;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,12 +16,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import javax.security.auth.callback.Callback;
-
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
@@ -31,12 +30,12 @@ public class HomeFragment extends Fragment {
     ImageView img_we, img;
     ArrayList<ConsolidatedWeather> weathers;
     ArrayList<Source> sources;
-   RecyclerView recyclerView ;
+    RecyclerView recyclerView ;
     int id;
     String city, bbc_url;
 
     public HomeFragment() {
-      //  Required empty public constructor
+        // Required empty public constructor
     }
 
 
@@ -63,7 +62,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        txt_dashname = view.findViewById(R.id.dash_name);
+
+
         txt_wename = view.findViewById(R.id.dash_wename);
         img_we = view.findViewById(R.id.dash_actimg);
         txt_mintemp = view.findViewById(R.id.txt_mintemp);
@@ -74,37 +74,26 @@ public class HomeFragment extends Fragment {
         txt_predect = view.findViewById(R.id.txt_prec);
 
 
-        img = view.findViewById(R.id.img_info);
+        img = view.findViewById(R.id.dash_actimg);
 
         recyclerView = view.findViewById(R.id.recycleV);
 
-       getWeather();
+        getWeather();
 
-        img.setOnClickListener(new View.OnClickListener() {
+      /*  img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putString("city", city);
-                if(city.equals("Calgary")){
-                    bundle.putString("bbc_url", bbc_url + "5913490");
-                } else if(city.equals("Toronto")){
-                    bundle.putString("bbc_url", bbc_url + "6167865");
-                } else if(city.equals("Edmonton")){
-                    bundle.putString("bbc_url", bbc_url + "5946768");
-                } else if(city.equals("Vancouver")){
-                    bundle.putString("bbc_url", bbc_url + "6173331");
-                } else {
-                    bundle.putString("bbc_url", bbc_url + "6077243");
-                }
+
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 final webFrag webFrag = new webFrag();
-                fragmentTransaction.add(R.id.nav_host_fragment, webFrag);
+                fragmentTransaction.add(R.id.host_fragment, webFrag);
                 fragmentTransaction.addToBackStack(null);
-
+                webFrag.setArguments(bundle);
                 fragmentTransaction.commit();
             }
-        });
+        });*/
 
     }
 
@@ -139,7 +128,7 @@ public class HomeFragment extends Fragment {
                 sources = new ArrayList<>(weatherData.getSources());
 
                 city = weatherData.getTitle();
-                bbc_url = sources.get(0).getUrl();
+
 
                 txt_dashname.setText(weatherData.getTitle().toUpperCase());
 
@@ -192,8 +181,7 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
 
         recyclerView.setLayoutManager(layoutManager);
-        Adapter adapter = new Adapter(wearray, getActivity().getApplicationContext()) {
-        };
+        Adapter adapter = new Adapter(wearray,getActivity().getApplicationContext());
         recyclerView.setAdapter(adapter);
     }
 

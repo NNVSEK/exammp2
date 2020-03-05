@@ -49,7 +49,7 @@ public class WeatherData {
         return consolidatedWeather;
     }
 
-    public void setConsolidatedWeather(List<ConsolidateWeather> consolidatedWeather) {
+    public void setConsolidatedWeather(List<ConsolidatedWeather> consolidatedWeather) {
        this.consolidatedWeather=consolidatedWeather;
     }
 
