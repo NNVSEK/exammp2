@@ -6,6 +6,7 @@ import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +29,7 @@ public class HomeFragment extends Fragment {
 
     TextView txt_dashname,txt_wename,txt_mintemp,txt_maxtemp,txt_acttemp,txt_humidity,txt_predect;
     ImageView img_we, img;
-    ArrayList<ConsolidateWeather> weathers;
+    ArrayList<ConsolidatedWeather> weathers;
     ArrayList<Source> sources;
    RecyclerView recyclerView ;
     int id;
@@ -98,7 +99,7 @@ public class HomeFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 final webFrag webFrag = new webFrag();
-                fragmentTransaction.add(R.id.host_fragment, webFrag);
+                fragmentTransaction.add(R.id.nav_host_fragment, webFrag);
                 fragmentTransaction.addToBackStack(null);
 
                 fragmentTransaction.commit();
@@ -191,7 +192,8 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
 
         recyclerView.setLayoutManager(layoutManager);
-        Adapter adapter = new Adapter(wearray,getActivity().getApplicationContext());
+        Adapter adapter = new Adapter(wearray, getActivity().getApplicationContext()) {
+        };
         recyclerView.setAdapter(adapter);
     }
 
