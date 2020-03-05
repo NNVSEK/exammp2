@@ -1,4 +1,4 @@
-package com.example.exammp2;
+package com.example.weatherapp;
 
 import android.content.Context;
 import android.text.format.DateFormat;
@@ -11,8 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.exammp2.ConsolidatedWeather;
-import com.example.exammp2.R;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -33,7 +31,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_adapter,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_adapter,parent,false);
 
         return new ViewHolder(view);
     }
@@ -64,10 +62,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
         public ViewHolder(View view) {
             super(view);
 
-            img = view.findViewById(R.id.textView);
+            img = view.findViewById(R.id.img_temp);
 
-            txt_temp = view.findViewById(R.id.textView);
-            txt_day = view.findViewById(R.id.textView);
+            txt_temp = view.findViewById(R.id.txt_temp);
+            txt_day = view.findViewById(R.id.txt_day);
 
             itemView.setTag(this);
 
