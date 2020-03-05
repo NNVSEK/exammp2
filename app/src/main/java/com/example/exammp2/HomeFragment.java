@@ -2,6 +2,7 @@ package com.example.exammp2;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,29 +14,28 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-//import androidx.recyclerview.widget.LinearLayoutManager;
-//import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-//import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 
-//import retrofit2.Call;
-//import retrofit2.Callback;
-//import retrofit2.Response;
+import javax.security.auth.callback.Callback;
+
 
 public class HomeFragment extends Fragment {
 
     TextView txt_dashname,txt_wename,txt_mintemp,txt_maxtemp,txt_acttemp,txt_humidity,txt_predect;
     ImageView img_we, img;
-    //ArrayList<ConsolidatedWeather> weathers;
-   // ArrayList<Source> sources;
-  //  RecyclerView recyclerView ;
+    ArrayList<ConsolidateWeather> weathers;
+    ArrayList<Source> sources;
+   RecyclerView recyclerView ;
     int id;
     String city, bbc_url;
 
     public HomeFragment() {
-        // Required empty public constructor
+      //  Required empty public constructor
     }
 
 
@@ -75,9 +75,9 @@ public class HomeFragment extends Fragment {
 
         img = view.findViewById(R.id.img_info);
 
-       // recyclerView = view.findViewById(R.id.recycleV);
+        recyclerView = view.findViewById(R.id.recycleV);
 
-      //  getWeather();
+       getWeather();
 
         img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 final webFrag webFrag = new webFrag();
-             //   fragmentTransaction.add(R.id.host_fragment, webFrag);
+                fragmentTransaction.add(R.id.host_fragment, webFrag);
                 fragmentTransaction.addToBackStack(null);
 
                 fragmentTransaction.commit();
@@ -117,7 +117,7 @@ public class HomeFragment extends Fragment {
         super.onDetach();
     }
 
- /*   public void getWeather()
+    public void getWeather()
     {
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
@@ -193,7 +193,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         Adapter adapter = new Adapter(wearray,getActivity().getApplicationContext());
         recyclerView.setAdapter(adapter);
-    }*/
+    }
 
 
 }
