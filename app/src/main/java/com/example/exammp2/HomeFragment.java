@@ -1,110 +1,199 @@
 package com.example.exammp2;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+//import androidx.recyclerview.widget.LinearLayoutManager;
+//import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+//import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+//import retrofit2.Call;
+//import retrofit2.Callback;
+//import retrofit2.Response;
+
 public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    TextView txt_dashname,txt_wename,txt_mintemp,txt_maxtemp,txt_acttemp,txt_humidity,txt_predect;
+    ImageView img_we, img;
+    //ArrayList<ConsolidatedWeather> weathers;
+   // ArrayList<Source> sources;
+  //  RecyclerView recyclerView ;
+    int id;
+    String city, bbc_url;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if(this.getArguments() != null){
+            id = this.getArguments().getInt("id");
+        }else{
+            id = 3534;
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        txt_dashname = view.findViewById(R.id.dash_name);
+        txt_wename = view.findViewById(R.id.dash_wename);
+        img_we = view.findViewById(R.id.dash_actimg);
+        txt_mintemp = view.findViewById(R.id.txt_mintemp);
+        txt_maxtemp = view.findViewById(R.id.txt_maxtemp);
+        txt_acttemp = view.findViewById(R.id.txt_actemp);
+
+        txt_humidity = view.findViewById(R.id.txt_humidity);
+        txt_predect = view.findViewById(R.id.txt_prec);
+
+
+        img = view.findViewById(R.id.img_info);
+
+       // recyclerView = view.findViewById(R.id.recycleV);
+
+      //  getWeather();
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("city", city);
+                if(city.equals("Calgary")){
+                    bundle.putString("bbc_url", bbc_url + "5913490");
+                } else if(city.equals("Toronto")){
+                    bundle.putString("bbc_url", bbc_url + "6167865");
+                } else if(city.equals("Edmonton")){
+                    bundle.putString("bbc_url", bbc_url + "5946768");
+                } else if(city.equals("Vancouver")){
+                    bundle.putString("bbc_url", bbc_url + "6173331");
+                } else {
+                    bundle.putString("bbc_url", bbc_url + "6077243");
+                }
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                final webFrag webFrag = new webFrag();
+             //   fragmentTransaction.add(R.id.host_fragment, webFrag);
+                fragmentTransaction.addToBackStack(null);
+
+                fragmentTransaction.commit();
+            }
+        });
+
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+ /*   public void getWeather()
+    {
+
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<WeatherData> call = service.getWeatherDataCall(id);
+
+        //System.out.println("ID: " + getArguments().getInt("cityid"));
+
+        call.enqueue(new Callback<WeatherData>() {
+            @Override
+            public void onResponse(Call<WeatherData> call, Response<WeatherData> response) {
+
+                System.out.println("Response Called!");
+
+                WeatherData weatherData = response.body();
+
+                weathers = new ArrayList<>(weatherData.getConsolidatedWeather());
+
+                sources = new ArrayList<>(weatherData.getSources());
+
+                city = weatherData.getTitle();
+                bbc_url = sources.get(0).getUrl();
+
+                txt_dashname.setText(weatherData.getTitle().toUpperCase());
+
+                setData(weathers);
+            }
+
+            @Override
+            public void onFailure(Call<WeatherData> call, Throwable t) {
+
+                System.out.println("Failure Called! :" +t.getMessage());
+            }
+        });
+
     }
+
+    public void setData(ArrayList<ConsolidatedWeather> wearray)
+    {
+        System.out.println("Size From method :"+wearray.size());
+        txt_wename.setText(wearray.get(0).getWeatherStateName());
+        setImage(img_we,getWeImage(wearray.get(0).getWeatherStateAbbr()));
+
+        String thetemp = String.format("%.2f",wearray.get(0).getTheTemp());
+        String mintemp = String.format("%.2f",wearray.get(0).getMinTemp());
+        String maxtemp = String.format("%.2f",wearray.get(0).getMaxTemp());
+
+        txt_mintemp.setText(mintemp);
+        txt_maxtemp.setText(maxtemp);
+        txt_acttemp.setText(thetemp);
+
+        txt_humidity.setText("Humidity : "+wearray.get(0).getHumidity().toString());
+        txt_predect.setText("Predictability : "+wearray.get(0).getPredictability().toString()+"%");
+
+        initView(wearray);
+
+    }
+
+    public String getWeImage(String code)
+    {
+        return "https://www.metaweather.com/static/img/weather/png/"+code+".png";
+    }
+
+    public void setImage(ImageView img,String link)
+    {
+        Picasso.get().load(link).into(img);
+    }
+
+    public void initView(ArrayList<ConsolidatedWeather> wearray)
+    {
+        wearray.remove(0);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL,false);
+
+        recyclerView.setLayoutManager(layoutManager);
+        Adapter adapter = new Adapter(wearray,getActivity().getApplicationContext());
+        recyclerView.setAdapter(adapter);
+    }*/
+
+
 }
